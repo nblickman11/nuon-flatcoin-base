@@ -46,4 +46,7 @@ interface INUONController {
     function getTargetCollateralValue() external view returns (uint256);
 
     function getMaxCratio(address _CHUB) external view returns (uint256);
+
+    function getTruflationPeg() external returns (uint256);
+
 }

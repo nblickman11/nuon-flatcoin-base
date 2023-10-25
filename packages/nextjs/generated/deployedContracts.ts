@@ -5,7 +5,7 @@ const contracts = {
       name: "baseGoerli",
       contracts: {
         CollateralHubV3: {
-          address: "0x67baFF31318638F497f4c4894Cd73918563942c8",
+          address: "0x82B40EEcAbdAbC3E4028b1B11396F7E2B8f76Df3",
           abi: [
             {
               anonymous: false,
@@ -329,7 +329,7 @@ const contracts = {
                   type: "uint256",
                 },
               ],
-              stateMutability: "view",
+              stateMutability: "nonpayable",
               type: "function",
             },
             {
@@ -427,7 +427,7 @@ const contracts = {
                   type: "uint256",
                 },
               ],
-              stateMutability: "view",
+              stateMutability: "nonpayable",
               type: "function",
             },
             {
@@ -466,7 +466,7 @@ const contracts = {
                   type: "uint256",
                 },
               ],
-              stateMutability: "view",
+              stateMutability: "nonpayable",
               type: "function",
             },
             {
@@ -492,7 +492,7 @@ const contracts = {
                   type: "uint256",
                 },
               ],
-              stateMutability: "view",
+              stateMutability: "nonpayable",
               type: "function",
             },
             {
@@ -511,7 +511,7 @@ const contracts = {
                   type: "uint256",
                 },
               ],
-              stateMutability: "view",
+              stateMutability: "nonpayable",
               type: "function",
             },
             {
@@ -1223,7 +1223,7 @@ const contracts = {
           ],
         },
         NUONControllerV3: {
-          address: "0xF5b81Fe0B6F378f9E6A3fb6A6cD1921FCeA11799",
+          address: "0x735451108FF885CdA775E05a859890558ddf6C19",
           abi: [
             {
               inputs: [],
@@ -1537,6 +1537,19 @@ const contracts = {
               type: "function",
             },
             {
+              inputs: [],
+              name: "nuonTokenPrice",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
               inputs: [
                 {
                   internalType: "address",
@@ -1646,10 +1659,49 @@ const contracts = {
               type: "function",
             },
             {
+              inputs: [
+                {
+                  internalType: "uint256",
+                  name: "_nuonTokenPrice",
+                  type: "uint256",
+                },
+              ],
+              name: "setNuonTokenPrice",
+              outputs: [],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "uint256",
+                  name: "_truflationPegPrice",
+                  type: "uint256",
+                },
+              ],
+              name: "setTruflationPegPrice",
+              outputs: [],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+            {
               inputs: [],
               name: "toggleMinting",
               outputs: [],
               stateMutability: "nonpayable",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "truflationPegPrice",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
               type: "function",
             },
           ],

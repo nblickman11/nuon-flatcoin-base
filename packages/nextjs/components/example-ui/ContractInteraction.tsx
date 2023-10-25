@@ -35,7 +35,7 @@ export const ContractInteraction = () => {
   });
 
   const { address } = useAccount(); // Get the user's address using the useAccount hook
-  const fixedAmount = 1000; // Fixed uint value
+  const fixedAmount = 10000000000000000000; // Fixed uint value
   const args3 = [address, fixedAmount]; // Provide the user's address and the fixed uint value
   const { writeAsync: writeAsync3, isLoading: isLoading3 } = useScaffoldContractWrite({
     contractName: "TestToken",
