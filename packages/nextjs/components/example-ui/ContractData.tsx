@@ -19,9 +19,19 @@ export const ContractData = () => {
   // const containerRef = useRef<HTMLDivElement>(null);
   // const greetingRef = useRef<HTMLDivElement>(null);
 
-  const { data: totalCounter } = useScaffoldContractRead({
-    contractName: "YourContract",
-    functionName: "totalCounter",
+  // const { data: totalCounter } = useScaffoldContractRead({
+  //   contractName: "YourContract",
+  //   functionName: "totalCounter",
+  // });
+
+  const { data: nuonPrice } = useScaffoldContractRead({
+    contractName: "NUONControllerV3",
+    functionName: "getNUONPrice",
+  });
+
+  const { data: pegPrice } = useScaffoldContractRead({
+    contractName: "NUONControllerV3",
+    functionName: "getTruflationPeg",
   });
 
   const { data: mintedAmount } = useScaffoldContractRead({
@@ -99,18 +109,37 @@ export const ContractData = () => {
                 }`}
             />
           </button> */}
-      <div className="bg-secondary border border-primary rounded-xl flex">
+      {/* <div className="bg-secondary border border-primary rounded-xl flex">
         <div className="p-2 py-1 border-r border-primary flex items-end">Total count</div>
         <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">
           {totalCounter?.toString() || "0"}
         </div>
+      </div> */}
+      <div className="bg-secondary border border-primary rounded-xl flex">
+        <div className="p-2 py-1 border-r border-primary flex items-end bg-green-200">Nuon Price</div>
+        <div className={`text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree ${pegPrice !== undefined ? 'bg-green-200' : 'bg-green-200'
+          }`}>
+          {nuonPrice !== undefined ? (Number(nuonPrice.toString()) / 10 ** 1).toFixed(2) : 'N/A'}
+        </div>
       </div>
+      <br />
+
+      <div className="bg-secondary border border-primary rounded-xl flex">
+        <div className="p-2 py-1 border-r border-primary flex items-end bg-green-200">Peg Price</div>
+        <div className={`text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree ${pegPrice !== undefined ? 'bg-green-200' : 'bg-green-200'
+          }`}>
+          {pegPrice !== undefined ? (Number(pegPrice.toString()) / 10 ** 1).toFixed(2) : 'N/A'}
+        </div>
+      </div>
+
+      <br />
+      <br />
       <br /> {/* Add this line break element to create a new line */}
       <div className="bg-secondary border border-primary rounded-xl flex">
-        <div className="p-2 py-1 border-r border-primary flex items-end">Your Minted Amount</div>
+        <div className="p-2 py-1 border-r border-primary flex items-end">Minted Amount</div>
         {mintedAmount !== undefined ? (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">
-            {(Number(mintedAmount.toString()) / 10 ** 37).toFixed(3)} {/* Divide by 37 and round to 3 decimal places */}
+            {(Number(mintedAmount.toString()) / 10 ** 54).toFixed(2)} {/* Divide by 37 and round to 3 decimal places */}
           </div>
         ) : (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">0</div>
@@ -118,7 +147,7 @@ export const ContractData = () => {
       </div>
       <br /> {/* Add this line break element to create a new line */}
       <div className="bg-secondary border border-primary rounded-xl flex">
-        <div className="p-2 py-1 border-r border-primary flex items-end">Your Test Token Amount</div>
+        <div className="p-2 py-1 border-r border-primary flex items-end">Test Token Amount</div>
         {testTokenAmount !== undefined ? (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">
             {testTokenAmount.toString()} {/* Divide by 37 and round to 3 decimal places */}
