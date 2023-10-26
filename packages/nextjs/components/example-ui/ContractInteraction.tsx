@@ -46,6 +46,31 @@ export const ContractInteraction = () => {
     },
   });
 
+  const [pegValue, setPegValue] = useState([BigInt(0)]); // Initialize with default values
+  const args4 = [pegValue[0]];
+  const { writeAsync: writeAsync4, isLoading: isLoading4 } = useScaffoldContractWrite({
+    contractName: "NUONControllerV3",
+    functionName: "setTruflationPegPrice",
+    args: args4 as [bigint | undefined], // Cast it to the expected type
+    onBlockConfirmation: txnReceipt => {
+      console.log("📦 Transaction blockHash", txnReceipt.blockHash);
+    },
+  });
+
+  const [nuonValue, setNuonValue] = useState([BigInt(0)]); // Initialize with default values
+  const args5 = [nuonValue[0]];
+  const { writeAsync: writeAsync5, isLoading: isLoading5 } = useScaffoldContractWrite({
+    contractName: "NUONControllerV3",
+    functionName: "setNuonTokenPrice",
+    args: args5 as [bigint | undefined], // Cast it to the expected type
+    onBlockConfirmation: txnReceipt => {
+      console.log("📦 Transaction blockHash", txnReceipt.blockHash);
+    },
+  });
+
+
+
+
   return (
     <div className="flex bg-base-300 relative pb-10">
       <DiamondIcon className="absolute top-24" />
@@ -76,13 +101,13 @@ export const ContractInteraction = () => {
           </button>
         </div>
 
-        <div className="flex flex-col mt-1 px-8 py-1 bg-base-200 opacity-80 rounded-2xl shadow-lg border-2 border-primary">
-          <span className="text-4xl sm:text-2xl text-black">Get Free Test Token!</span>
-          <div className="mt-2 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-5">
-            <div className="flex rounded-full border border-primary p-1 flex-shrink-0">
+        <div className="flex flex-col mt-1 px-2 py-1 mx-2 bg-base-200 opacity-80 rounded-2xl shadow-lg border-2 border-primary">
+          <div className="flex flex-row items-center justify-between">
+            <span className="text-4xl sm:text-2xl text-black">Get Free Test Token!</span>
+            <div className="flex items-center">
               <div className="flex rounded-full border-2 border-primary p-1">
                 <button
-                  className="btn btn-primary rounded-full capitalize font-normal font-white w-24 flex items-center gap-1 hover:gap-2 transition-all tracking-widest"
+                  className="btn btn-primary rounded-full capitalize font-normal font-white w-70 flex items-center gap-1 hover:gap-2 transition-all tracking-widest"
                   onClick={() => writeAsync3()}
                   disabled={isLoading3}
                 >
@@ -98,6 +123,73 @@ export const ContractInteraction = () => {
             </div>
           </div>
         </div>
+
+
+        <div className="flex flex-col mt-1 px-2 py-1 mx-2 bg-base-200 opacity-80 rounded-2xl shadow-lg border-2 border-primary">
+          <div className="flex flex-row items-center justify-between">
+            <span className="text-4xl sm:text-2xl text-black">Testing Only:&nbsp;&nbsp; Set Nuon.&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <input
+              type="text"
+              placeholder="Nuon"
+              className="input font-bai-jamjuree w-28 px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
+              onChange={e => {
+                const newValue = BigInt(e.target.value) * BigInt(10 ** 16);
+                setNuonValue([newValue]); // Set the first value to its current value, and the second value to the parsed input
+              }}
+            />
+            <div className="flex items-center">
+              <div className="flex rounded-full border-2 border-primary p-1">
+                <button
+                  className="btn btn-primary rounded-full capitalize font-normal font-white w-70 flex items-center gap-1 hover:gap-2 transition-all tracking-widest"
+                  onClick={() => writeAsync5()}
+                  disabled={isLoading5}
+                >
+                  {isLoading ? (
+                    <span className="loading loading-spinner loading-sm"></span>
+                  ) : (
+                    <>
+                      Set <ArrowSmallRightIcon className="w-3 h-3 mt-0.5" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col mt-1 px-2 py-1 mx-2 bg-base-200 opacity-80 rounded-2xl shadow-lg border-2 border-primary">
+          <div className="flex flex-row items-center justify-between">
+            <span className="text-4xl sm:text-2xl text-black">Testing Only:&nbsp;&nbsp; Set the Peg.</span>
+            <input
+              type="text"
+              placeholder="Peg"
+              className="input font-bai-jamjuree w-24 px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
+              onChange={e => {
+                const newValue = BigInt(e.target.value) * BigInt(10 ** 16);
+                setPegValue([newValue]); // Set the first value to its current value, and the second value to the parsed input
+              }}
+            />
+            <div className="flex items-center">
+              <div className="flex rounded-full border-2 border-primary p-1">
+                <button
+                  className="btn btn-primary rounded-full capitalize font-normal font-white w-70 flex items-center gap-1 hover:gap-2 transition-all tracking-widest"
+                  onClick={() => writeAsync4()}
+                  disabled={isLoading4}
+                >
+                  {isLoading ? (
+                    <span className="loading loading-spinner loading-sm"></span>
+                  ) : (
+                    <>
+                      Set <ArrowSmallRightIcon className="w-3 h-3 mt-0.5" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
 
         <div className="flex flex-col mt-6 px-7 py-8 bg-base-200 opacity-80 rounded-2xl shadow-lg border-2 border-primary">
           <span className="text-4xl sm:text-6xl text-black">Mint Nuon Now!</span>
@@ -158,7 +250,7 @@ export const ContractInteraction = () => {
               placeholder="Burn Your Nuon"
               className="input font-bai-jamjuree w-full px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
               onChange={e => {
-                const newValue2 = BigInt(e.target.value) * BigInt(10 ** 19);
+                const newValue2 = BigInt(e.target.value) * BigInt(10 ** 17);
                 setRedeemValue([newValue2]);
               }}
             />

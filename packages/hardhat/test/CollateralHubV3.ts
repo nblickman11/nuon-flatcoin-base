@@ -172,7 +172,7 @@ describe("CollateralHubV3", function () {
             // Now, 13.6 cumulative nuon minted and weth reduced cause staked in contract
 
             // Redeem/Burn 3 Nuon and get back $9.21 (.00589 WETH)  
-            const redeemAmount = myEthers.parseUnits("30000000000000000", 17);
+            const redeemAmount = myEthers.parseUnits("300000000000000000", 17);
 
             const redeemTx = await collateralHubV3Instance.redeem(redeemAmount);
             const receipt = await redeemTx.wait();

@@ -119,16 +119,16 @@ export const ContractData = () => {
         <div className="p-2 py-1 border-r border-primary flex items-end bg-green-200">Nuon Price</div>
         <div className={`text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree ${pegPrice !== undefined ? 'bg-green-200' : 'bg-green-200'
           }`}>
-          {nuonPrice !== undefined ? (Number(nuonPrice.toString()) / 10 ** 1).toFixed(2) : 'N/A'}
+          {nuonPrice !== undefined ? (Number(nuonPrice.toString()) / 10 ** 17).toFixed(2) : 'N/A'}
         </div>
       </div>
       <br />
 
       <div className="bg-secondary border border-primary rounded-xl flex">
-        <div className="p-2 py-1 border-r border-primary flex items-end bg-green-200">Peg Price</div>
+        <div className="p-2 py-1 border-r border-primary flex items-end bg-green-200">Truflation Peg Price</div>
         <div className={`text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree ${pegPrice !== undefined ? 'bg-green-200' : 'bg-green-200'
           }`}>
-          {pegPrice !== undefined ? (Number(pegPrice.toString()) / 10 ** 1).toFixed(2) : 'N/A'}
+          {pegPrice !== undefined ? (Number(pegPrice.toString()) / 10 ** 17).toFixed(2) : 'N/A'}
         </div>
       </div>
 
@@ -136,10 +136,10 @@ export const ContractData = () => {
       <br />
       <br /> {/* Add this line break element to create a new line */}
       <div className="bg-secondary border border-primary rounded-xl flex">
-        <div className="p-2 py-1 border-r border-primary flex items-end">Minted Amount</div>
+        <div className="p-2 py-1 border-r border-primary flex items-end">Minted Nuon Amount</div>
         {mintedAmount !== undefined ? (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">
-            {(Number(mintedAmount.toString()) / 10 ** 54).toFixed(2)} {/* Divide by 37 and round to 3 decimal places */}
+            {(Number(mintedAmount.toString()) / 10 ** 38).toFixed(8)} {/* Divide by 37 and round to 3 decimal places */}
           </div>
         ) : (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">0</div>
@@ -150,7 +150,7 @@ export const ContractData = () => {
         <div className="p-2 py-1 border-r border-primary flex items-end">Test Token Amount</div>
         {testTokenAmount !== undefined ? (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">
-            {testTokenAmount.toString()} {/* Divide by 37 and round to 3 decimal places */}
+            {Number(testTokenAmount.toString()) / 10 ** 8} {/* Divide by 37 and round to 3 decimal places */}
           </div>
         ) : (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">0</div>

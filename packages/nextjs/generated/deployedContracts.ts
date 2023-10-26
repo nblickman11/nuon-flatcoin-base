@@ -1223,7 +1223,7 @@ const contracts = {
           ],
         },
         NUONControllerV3: {
-          address: "0x735451108FF885CdA775E05a859890558ddf6C19",
+          address: "0xFAA547C58A0bC15B7b899ED9561898e4bbc60a51",
           abi: [
             {
               inputs: [],
