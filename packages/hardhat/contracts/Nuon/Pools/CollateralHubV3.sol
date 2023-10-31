@@ -11,6 +11,8 @@ import "../interfaces/INUON.sol";
 
 import "../TestToken.sol";
 
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+
 /**
  * @notice The Collateral Hub (CHub) is receiving collaterals from users, and mint them back NUON according to the collateral ratio defined in the NUON Controller
  * @dev (Driiip) TheHashM
@@ -38,6 +40,9 @@ contract CollateralHubV3 {
 	address public NLP;
 	address public Relayer;
 	address public USDT;
+
+	AggregatorV3Interface public priceFeed;
+	uint256 public assetPrice;
 
 	/**
 	 * @notice Contract Data : mapping and infos
@@ -95,6 +100,17 @@ contract CollateralHubV3 {
 		uint256 amountSentToUser
 	);
 	event burnedNuon(address indexed user, uint256 burnedAmount);
+	event oraclePrice(uint256 price);
+
+	constructor() {
+		// https://docs.chain.link/data-feeds/price-feeds/addresses/?network=base&page=1
+		priceFeed = AggregatorV3Interface(
+			0xcD2A119bD1F7DF95d706DE6F2057fDD45A0503E2
+		);
+		(, int price, , , ) = priceFeed.latestRoundData();
+		uint256 priceAsUint = uint256(price);
+		assetPrice = priceAsUint.mul(1e10);
+	}
 
 	function initialize(uint256 _assetMultiplier) public {
 		assetMultiplier = _assetMultiplier;
@@ -135,7 +151,7 @@ contract CollateralHubV3 {
 		uint256 _amount
 	) external returns (uint256) {
 		uint256 x = 1e18;
-		_collateralRatio = (x).div(_collateralRatio).mul(1e20);
+		_collateralRatio = (x).div(_collateralRatio).mul(1e2);
 
 		require(
 			INUONController(NUONController).isMintPaused() == false,
@@ -201,7 +217,8 @@ contract CollateralHubV3 {
 
 		// Give user fake WETH to test.
 		// Also for mint, approve, transferfromm, need call my funcs to call real ones.
-		TestToken(testToken).mint(msg.sender, _amount.add(collateralRequired));
+
+		//TestToken(testToken).mint(msg.sender, _amount.add(collateralRequired));
 
 		TestToken(testToken).myApprove(
 			msg.sender,
@@ -214,6 +231,9 @@ contract CollateralHubV3 {
 			address(this),
 			_amount.add(collateralRequired)
 		);
+
+		// Send the user's collateral Eth from their wallet to this hub.
+		//payable(address(this)).transfer(_amount.add(collateralRequired));
 
 		//_addLiquidity: sends some of the WETH to pool for USDT and NUON.  This pair
 		// gets staked in a pool, earns interest in Vault, and is returned to the usersLP.
@@ -277,7 +297,7 @@ contract CollateralHubV3 {
 		);
 
 		// BUT THE MINTING FEE IS NOT .001 THATS A DECIMALL!!!!! Is 1 for now.
-		// 10686511125330335 - ((10686511125330335)*1/100/1000000000000000000) = 1.0686511e+16
+		// 013514852823252754 - ((013514852823252754)*000100000000000000/100/1000000000000000000)
 		// So multiply 1.0686511e+16 by assetMultiplier of 100 to get 18 dec number.
 		uint256 collateralAmountAfterFees = collateralAmount.sub(
 			collateralAmount
@@ -300,23 +320,49 @@ contract CollateralHubV3 {
 		);
 
 		// LINE below streams off into many more calculations. So for now do:
-		uint256 collateralRequired = 10;
+		uint256 collateralRequired = 10; // 4.504951e+15
 		//(uint256 collateralRequired, ) = mintLiquidityHelper(NUONAmountD18);
 
 		return (
-			NUONAmountD18,
+			NUONAmountD18, // 8.1494563e+18
 			INUONController(NUONController).getMintingFee(address(this)),
 			collateralAmountAfterFees,
-			collateralRequired
+			collateralRequired //4.504951e+15, much smaller right now.
 		);
+	}
+
+	function mintLiquidityHelper(
+		uint256 _NUONAmountD18
+	) internal returns (uint256, uint256) {
+		//if (msg.sender != owner()) {
+		uint256 nuonValue = _NUONAmountD18.mul(getTargetPeg()).div(1e18);
+		// 8.1494563e+18 * 1000000000000000000 / 1809000000000000000000 = 4.504951e+15
+		uint256 collateralRequired = nuonValue
+			.mul(1e18)
+			.div(getCollateralPrice())
+			.div(assetMultiplier);
+		// uint256 collateralBuffer = collateralRequired
+		//     .mul(liquidityBuffer)
+		//     .div(100);
+		// return (collateralRequired.add(collateralBuffer), collateralRequired);
+		return (collateralRequired, collateralRequired);
+		// } else {
+		//     return (0, 0);
+		// }
 	}
 
 	/**
 	 * @notice A view function to get the collateral price of an asset directly on chain
 	 * return The asset price
 	 */
-	function getCollateralPrice() public view returns (uint256) {
-		return 1700;
+	function getCollateralPrice() public returns (uint256) {
+		(, int price, , , ) = priceFeed.latestRoundData();
+		uint256 priceAsUint = uint256(price);
+		assetPrice = priceAsUint.mul(1e10);
+		emit oraclePrice(assetPrice); // 1809571780000000000000n
+		return assetPrice;
+
+		//return 1800;
 		//uint256 assetPrice = IChainlinkOracle(ChainlinkOracle).latestAnswer().mul(1e10);
 		//return assetPrice;
 	}
@@ -333,17 +379,19 @@ contract CollateralHubV3 {
 		uint256 collateralPrice,
 		uint256 collateralAmountD18
 	) internal returns (uint256) {
+		// resulta = (13514852823252754 * 1809000000000000000000 / 1000000000000000000)
 		uint256 collateralValue = (collateralAmountD18.mul(collateralPrice))
 			.div(1e18);
+
+		// resulta * 333333333333333300 / 1000000000000000000 = 8.1494563e+18
 		uint256 NUONValueToMint = collateralValue.mul(collateralRatio).div(
 			INUONController(NUONController).getTruflationPeg()
 		);
 		return NUONValueToMint;
-		//1000000000000000000 //ITruflation(TruflationOracle).getNuonTargetPeg()
+		//ITruflation(TruflationOracle).getNuonTargetPeg()
 	}
 
 	function getTargetPeg() public returns (uint256) {
-		//return 1000000000000000000;
 		return INUONController(NUONController).getTruflationPeg();
 		//uint256 peg = ITruflation(TruflationOracle).getNuonTargetPeg();
 		//return peg;
@@ -418,8 +466,11 @@ contract CollateralHubV3 {
 		INUON(NUON).transferFrom(msg.sender, address(this), NUONAmount);
 		// This contract burns that Nuon.
 		INUON(NUON).myBurn(NUONAmount);
+
 		// Send user the corresponding amount of collateral back.
 		TestToken(testToken).transfer(msg.sender, fullAmountSubFees);
+		//payable(msg.sender).transfer(fullAmountSubFees);
+
 		//IERC20Burnable(TestToken).transfer(Treasury, fees);
 
 		emit Redeemed(msg.sender, fullAmount, NUONAmount);

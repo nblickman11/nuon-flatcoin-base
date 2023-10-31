@@ -5,8 +5,13 @@ const contracts = {
       name: "baseGoerli",
       contracts: {
         CollateralHubV3: {
-          address: "0x82B40EEcAbdAbC3E4028b1B11396F7E2B8f76Df3",
+          address: "0x6520b918c89d2E2354547283ee043CC45f49f522",
           abi: [
+            {
+              inputs: [],
+              stateMutability: "nonpayable",
+              type: "constructor",
+            },
             {
               anonymous: false,
               inputs: [
@@ -143,6 +148,19 @@ const contracts = {
                 },
               ],
               name: "mintedWithoutDeposit",
+              type: "event",
+            },
+            {
+              anonymous: false,
+              inputs: [
+                {
+                  indexed: false,
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+              ],
+              name: "oraclePrice",
               type: "event",
             },
             {
@@ -303,6 +321,19 @@ const contracts = {
             {
               inputs: [],
               name: "assetMultiplier",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "assetPrice",
               outputs: [
                 {
                   internalType: "uint256",
@@ -479,7 +510,7 @@ const contracts = {
                   type: "uint256",
                 },
               ],
-              stateMutability: "view",
+              stateMutability: "nonpayable",
               type: "function",
             },
             {
@@ -681,6 +712,19 @@ const contracts = {
                   internalType: "uint256",
                   name: "",
                   type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "priceFeed",
+              outputs: [
+                {
+                  internalType: "contract AggregatorV3Interface",
+                  name: "",
+                  type: "address",
                 },
               ],
               stateMutability: "view",
@@ -2306,7 +2350,7 @@ const contracts = {
           ],
         },
         YourContract: {
-          address: "0x7437E78F2626456026e9169186bF15CE8c10d562",
+          address: "0x35707bE87d55F6b5f3CA9F24ec4108084d88a99A",
           abi: [
             {
               inputs: [

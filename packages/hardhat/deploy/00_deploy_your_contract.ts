@@ -67,14 +67,16 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   console.log(
     `CollateralHubV3 setCoreAddress: ${nuonControllerV3.address}, ${nlpETH.address}, ${nuon.address}, ${testToken.address}`,
   );
-  const initializerTx = await collateralHubV3.initialize(100);
+  const initializerTx = await collateralHubV3.initialize(1);
   await initializerTx.wait();
   console.log(`CollateralHubV3 Initializer params are set`);
 
   // Call nuonControllerV3's setEcosystemParametersForCHUBS()
-  const parsedValue = myEthers.utils.parseUnits("500000000000000000", 18);
-  const parsedValue2 = myEthers.utils.parseUnits("111111111100000000", 18);
-  const mintFee = myEthers.utils.parseUnits("000000000000000001", 18);
+  const parsedValue = myEthers.utils.parseUnits("500000000000000000", 0);
+  const parsedValue2 = myEthers.utils.parseUnits("111111111100000000", 0);
+  const mintFee = myEthers.utils.parseUnits("000100000000000000", 0);
+  const redeemFee = myEthers.utils.parseUnits("000100000000000000", 0);
+
   const setEcosystemParametersForCHUBSTx = await nuonControllerV3.setEcosystemParametersForCHUBS(
     collateralHubV3.address,
     parsedValue,
@@ -82,10 +84,10 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
     parsedValue,
     parsedValue2,
     1,
-    -900,
-    900,
+    -9000,
+    9000,
     mintFee,
-    1,
+    redeemFee,
   );
   await setEcosystemParametersForCHUBSTx.wait();
   console.log(`NuonControllerV3's ecosystem params have been set`);

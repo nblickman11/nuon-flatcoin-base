@@ -37,7 +37,7 @@ export const ContractInteraction = () => {
     });
 
     const { address } = useAccount(); // Get the user's address using the useAccount hook
-    const fixedAmount = 10000000000000000000; // Fixed uint value
+    const fixedAmount = 1000000000000000000; // 1 ETH worth of WETH
     const args3 = [address, fixedAmount]; // Provide the user's address and the fixed uint value
     const { writeAsync: writeAsync3, isLoading: isLoading3 } = useScaffoldContractWrite({
         contractName: "TestToken",
@@ -105,7 +105,7 @@ export const ContractInteraction = () => {
 
                 <div className="flex flex-col mt-1 px-2 py-1 mx-2 bg-base-200 opacity-80 rounded-2xl shadow-lg border-2 border-primary">
                     <div className="flex flex-row items-center justify-between">
-                        <span className="text-4xl sm:text-2xl text-black">Get Free Test Token!</span>
+                        <span className="text-4xl sm:text-2xl text-black">Get 1 WETH worth of Tokens to Stake!</span>
                         <div className="flex items-center">
                             <div className="flex rounded-full border-2 border-primary p-1">
                                 <button
@@ -135,7 +135,7 @@ export const ContractInteraction = () => {
                             placeholder="Nuon"
                             className="input font-bai-jamjuree w-28 px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
                             onChange={e => {
-                                const newValue = BigInt(e.target.value) * BigInt(10 ** 16);
+                                const newValue = BigInt(e.target.value) * BigInt(10 ** 17);
                                 setNuonValue([newValue]); // Set the first value to its current value, and the second value to the parsed input
                             }}
                         />
@@ -167,7 +167,7 @@ export const ContractInteraction = () => {
                             placeholder="Peg"
                             className="input font-bai-jamjuree w-24 px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
                             onChange={e => {
-                                const newValue = BigInt(e.target.value) * BigInt(10 ** 16);
+                                const newValue = BigInt(e.target.value) * BigInt(10 ** 17);
                                 setPegValue([newValue]); // Set the first value to its current value, and the second value to the parsed input
                             }}
                         />
@@ -192,7 +192,6 @@ export const ContractInteraction = () => {
                 </div>
 
 
-
                 <div className="flex flex-col mt-6 px-7 py-8 bg-base-200 opacity-80 rounded-2xl shadow-lg border-2 border-primary">
                     <span className="text-4xl sm:text-6xl text-black">Mint Nuon Now!</span>
 
@@ -211,7 +210,9 @@ export const ContractInteraction = () => {
                             placeholder="Deposit"
                             className="input font-bai-jamjuree w-full px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
                             onChange={e => {
-                                const newValue = BigInt(e.target.value) * BigInt(10 ** 17);
+                                //const newValue = BigInt(e.target.value);
+                                const newValue = ethers.utils.parseUnits(e.target.value.toString(), 0);
+
                                 setUintValues([uintValues[0], newValue]); // Set the first value to its current value, and the second value to the parsed input
                             }}
                         />
@@ -244,7 +245,8 @@ export const ContractInteraction = () => {
                             placeholder="Burn Your Nuon"
                             className="input font-bai-jamjuree w-full px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
                             onChange={e => {
-                                const newValue2 = BigInt(e.target.value) * BigInt(10 ** 17);
+                                const newValue2 = ethers.utils.parseUnits(e.target.value.toString(), 0);
+                                //const newValue2 = BigInt(e.target.value);
                                 setRedeemValue([newValue2]);
                             }}
                         />

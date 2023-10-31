@@ -19,10 +19,10 @@ export const ContractData = () => {
   // const containerRef = useRef<HTMLDivElement>(null);
   // const greetingRef = useRef<HTMLDivElement>(null);
 
-  // const { data: totalCounter } = useScaffoldContractRead({
-  //   contractName: "YourContract",
-  //   functionName: "totalCounter",
-  // });
+  const { data: totalCounter } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "totalCounter",
+  });
 
   const { data: nuonPrice } = useScaffoldContractRead({
     contractName: "NUONControllerV3",
@@ -43,6 +43,17 @@ export const ContractData = () => {
   const { data: testTokenAmount } = useScaffoldContractRead({
     contractName: "TestToken",
     functionName: "balanceOf",
+    args: [address],
+  });
+
+  const { data: ethPrice } = useScaffoldContractRead({
+    contractName: "CollateralHubV3",
+    functionName: "assetPrice",
+  });
+
+  const { data: collateralAmount } = useScaffoldContractRead({
+    contractName: "CollateralHubV3",
+    functionName: "usersAmounts",
     args: [address],
   });
 
@@ -92,6 +103,7 @@ export const ContractData = () => {
   // }, [transitionEnabled, containerRef, greetingRef]);
 
   return (
+
     <div className="flex flex-col justify-center items-center bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] py-10 px-5 sm:px-0 lg:py-auto max-w-[100vw] ">
       {/* <div
         className={`flex flex-col max-w-md bg-base-200 bg-opacity-70 rounded-2xl shadow-lg px-5 py-4 w-full ${showAnimation ? "animate-zoom" : ""
@@ -99,27 +111,54 @@ export const ContractData = () => {
       > */}
       {/* <div className="flex justify-between w-full"> */}
       {/* <button
-            className="btn btn-circle btn-ghost relative bg-center bg-[url('/assets/switch-button-on.png')] bg-no-repeat"
-            onClick={() => {
-              setTransitionEnabled(!transitionEnabled);
-            }}
-          >
-            <div
-              className={`absolute inset-0 bg-center bg-no-repeat bg-[url('/assets/switch-button-off.png')] transition-opacity ${transitionEnabled ? "opacity-0" : "opacity-100"
-                }`}
-            />
-          </button> */}
+        className="btn btn-circle btn-ghost relative bg-center bg-[url('/assets/switch-button-on.png')] bg-no-repeat"
+        onClick={() => {
+          setTransitionEnabled(!transitionEnabled);
+        }}
+      >
+        <div
+          className={`absolute inset-0 bg-center bg-no-repeat bg-[url('/assets/switch-button-off.png')] transition-opacity ${transitionEnabled ? "opacity-0" : "opacity-100"
+            }`}
+        />
+      </button> */}
       {/* <div className="bg-secondary border border-primary rounded-xl flex">
         <div className="p-2 py-1 border-r border-primary flex items-end">Total count</div>
         <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">
           {totalCounter?.toString() || "0"}
         </div>
       </div> */}
+
+
+      <div className="bg-primary border border-primary rounded-xl flex">
+        <div className="p-2 py-1 border-r border-primary flex items-end text-white">WETH Balance:</div>
+        {testTokenAmount !== undefined ? (
+          <div className="text-2xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree text-white">
+            {((Number(testTokenAmount.toString()) / 10 ** 18)).toFixed(4)}
+          </div>
+        ) : (
+          <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree text-white">0</div>
+        )}
+      </div>
+      <br />
+      <div className="bg-primary border border-primary rounded-xl flex">
+        <div className="p-2 py-1 border-r border-primary flex items-end text-white">Real Time WETH Price:</div>
+        {ethPrice !== undefined ? (
+          <div className="text-2xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree text-white">
+            {((Number(ethPrice.toString()) / 10 ** 18)).toFixed(2)}
+          </div>
+        ) : (
+          <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree text-white">0</div>
+        )}
+      </div>
+      <br />
+      <br />
+      <br />
+
       <div className="bg-secondary border border-primary rounded-xl flex">
         <div className="p-2 py-1 border-r border-primary flex items-end bg-green-200">Nuon Price</div>
         <div className={`text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree ${pegPrice !== undefined ? 'bg-green-200' : 'bg-green-200'
           }`}>
-          {nuonPrice !== undefined ? (Number(nuonPrice.toString()) / 10 ** 17).toFixed(2) : 'N/A'}
+          {nuonPrice !== undefined ? (Number(nuonPrice.toString()) / 10 ** 18).toFixed(2) : 'N/A'}
         </div>
       </div>
       <br />
@@ -128,7 +167,7 @@ export const ContractData = () => {
         <div className="p-2 py-1 border-r border-primary flex items-end bg-green-200">Truflation Peg Price</div>
         <div className={`text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree ${pegPrice !== undefined ? 'bg-green-200' : 'bg-green-200'
           }`}>
-          {pegPrice !== undefined ? (Number(pegPrice.toString()) / 10 ** 17).toFixed(2) : 'N/A'}
+          {pegPrice !== undefined ? (Number(pegPrice.toString()) / 10 ** 18).toFixed(2) : 'N/A'}
         </div>
       </div>
 
@@ -139,23 +178,25 @@ export const ContractData = () => {
         <div className="p-2 py-1 border-r border-primary flex items-end">Minted Nuon Amount</div>
         {mintedAmount !== undefined ? (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">
-            {(Number(mintedAmount.toString()) / 10 ** 38).toFixed(8)} {/* Divide by 37 and round to 3 decimal places */}
+            {(Number(mintedAmount.toString()) / 10 ** 18).toFixed(2)}
           </div>
         ) : (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">0</div>
         )}
       </div>
       <br /> {/* Add this line break element to create a new line */}
+
       <div className="bg-secondary border border-primary rounded-xl flex">
-        <div className="p-2 py-1 border-r border-primary flex items-end">Test Token Amount</div>
-        {testTokenAmount !== undefined ? (
+        <div className="p-2 py-1 border-r border-primary flex items-end">Collateral WETH Amount</div>
+        {collateralAmount !== undefined ? (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">
-            {Number(testTokenAmount.toString()) / 10 ** 8} {/* Divide by 37 and round to 3 decimal places */}
+            {(Number(collateralAmount.toString()) / 10 ** 18).toFixed(4)}
           </div>
         ) : (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">0</div>
         )}
       </div>
+
       {/* <div className="bg-secondary border border-primary rounded-xl flex">
         <div className="p-2 py-1 border-r border-primary flex items-end">Your Minted Amount</div>
         <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">
