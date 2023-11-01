@@ -131,9 +131,9 @@ export const ContractData = () => {
 
       <div className="bg-primary border border-primary rounded-xl flex">
         <div className="p-2 py-1 border-r border-primary flex items-end text-white">WETH Balance:</div>
-        {testTokenAmount !== undefined ? (
+        {testTokenAmount !== undefined && ethPrice !== undefined ? (
           <div className="text-2xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree text-white">
-            {((Number(testTokenAmount.toString()) / 10 ** 18)).toFixed(4)}
+            {((Number(testTokenAmount.toString()) / 10 ** 18)).toFixed(4)}<span className="text-base mt-2">&nbsp;&nbsp;(${(((Number(testTokenAmount.toString()) / 10 ** 18) * (Number(ethPrice.toString())) / 10 ** 18)).toFixed(0)})</span>
           </div>
         ) : (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree text-white">0</div>
@@ -144,7 +144,7 @@ export const ContractData = () => {
         <div className="p-2 py-1 border-r border-primary flex items-end text-white">Real Time WETH Price:</div>
         {ethPrice !== undefined ? (
           <div className="text-2xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree text-white">
-            {((Number(ethPrice.toString()) / 10 ** 18)).toFixed(2)}
+            ${((Number(ethPrice.toString()) / 10 ** 18)).toFixed(2)}<span className="text-sm mt-2.5">&nbsp;</span>
           </div>
         ) : (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree text-white">0</div>
@@ -158,7 +158,7 @@ export const ContractData = () => {
         <div className="p-2 py-1 border-r border-primary flex items-end bg-green-200">Nuon Price</div>
         <div className={`text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree ${pegPrice !== undefined ? 'bg-green-200' : 'bg-green-200'
           }`}>
-          {nuonPrice !== undefined ? (Number(nuonPrice.toString()) / 10 ** 18).toFixed(2) : 'N/A'}
+          ${nuonPrice !== undefined ? (Number(nuonPrice.toString()) / 10 ** 18).toFixed(2) : 'N/A'}
         </div>
       </div>
       <br />
@@ -167,7 +167,7 @@ export const ContractData = () => {
         <div className="p-2 py-1 border-r border-primary flex items-end bg-green-200">Truflation Peg Price</div>
         <div className={`text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree ${pegPrice !== undefined ? 'bg-green-200' : 'bg-green-200'
           }`}>
-          {pegPrice !== undefined ? (Number(pegPrice.toString()) / 10 ** 18).toFixed(2) : 'N/A'}
+          ${pegPrice !== undefined ? (Number(pegPrice.toString()) / 10 ** 18).toFixed(2) : 'N/A'}
         </div>
       </div>
 
@@ -188,9 +188,9 @@ export const ContractData = () => {
 
       <div className="bg-secondary border border-primary rounded-xl flex">
         <div className="p-2 py-1 border-r border-primary flex items-end">Collateral WETH Amount</div>
-        {collateralAmount !== undefined ? (
+        {collateralAmount !== undefined && ethPrice !== undefined ? (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">
-            {(Number(collateralAmount.toString()) / 10 ** 18).toFixed(4)}
+            {((Number(collateralAmount.toString()) / 10 ** 18)).toFixed(4)}<span className="text-2xl mt-2.5">&nbsp;&nbsp;(${(((Number(collateralAmount.toString()) / 10 ** 18) * (Number(ethPrice.toString())) / 10 ** 18)).toFixed(0)})</span>
           </div>
         ) : (
           <div className="text-4xl text-right min-w-[3rem] px-2 py-1 flex justify-end font-bai-jamjuree">0</div>

@@ -208,12 +208,11 @@ export const ContractInteraction = () => {
                         <input
                             type="text"
                             placeholder="Deposit"
-                            className="input font-bai-jamjuree w-full px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
+                            className="input font-bai-jamjuree w-full px-2 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
                             onChange={e => {
-                                //const newValue = BigInt(e.target.value);
-                                const newValue = ethers.utils.parseUnits(e.target.value.toString(), 0);
-
-                                setUintValues([uintValues[0], newValue]); // Set the first value to its current value, and the second value to the parsed input
+                                const newValue = BigInt(parseFloat(e.target.value) * 10 ** 18);
+                                const newValue2 = ethers.utils.parseUnits(newValue.toString(), 0);
+                                setUintValues([uintValues[0], newValue2]); // Set the first value to its current value, and the second value to the parsed input
                             }}
                         />
                         <div className="flex rounded-full border border-primary p-1 flex-shrink-0">
@@ -245,8 +244,7 @@ export const ContractInteraction = () => {
                             placeholder="Burn Your Nuon"
                             className="input font-bai-jamjuree w-full px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
                             onChange={e => {
-                                const newValue2 = ethers.utils.parseUnits(e.target.value.toString(), 0);
-                                //const newValue2 = BigInt(e.target.value);
+                                const newValue2 = ethers.utils.parseUnits(e.target.value.toString(), 18);
                                 setRedeemValue([newValue2]);
                             }}
                         />
