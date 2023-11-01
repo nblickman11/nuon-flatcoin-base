@@ -1,1 +1,1 @@
-Bringing Nuon Flatcoin from Arbitrum to Base.
+I am bringing the Nuon Flatcoin from Arbitrum to Base.
