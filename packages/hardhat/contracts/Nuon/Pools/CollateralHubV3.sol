@@ -319,9 +319,7 @@ contract CollateralHubV3 {
 			collateralAmountAfterFeesD18
 		);
 
-		// LINE below streams off into many more calculations. So for now do:
-		uint256 collateralRequired = 10; // 4.504951e+15
-		//(uint256 collateralRequired, ) = mintLiquidityHelper(NUONAmountD18);
+		(uint256 collateralRequired, ) = mintLiquidityHelper(NUONAmountD18); // 4.504951e+15
 
 		return (
 			NUONAmountD18, // 8.1494563e+18
