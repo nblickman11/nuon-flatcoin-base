@@ -1,1 +1,1 @@
-Bringing the Nuon Flatcoin from Arbitrum to Base.
+Nuon https://nuon.fi/ is an existing Flatcoin on the Arbitrum network, with smart contracts that contain the economics behind their coin.  The project includes bringing over these smart contracts to the Base Goerli network, modifying the contracts, understanding the math behind the protocol’s economic theory, creating a front end, and calling a Chainlink Oracle.
