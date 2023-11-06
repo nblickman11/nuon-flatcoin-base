@@ -36,7 +36,7 @@ const config: HardhatUserConfig = {
     deployer: {
       // By default, it will take the first Hardhat account as the deployer
       //default: 0,
-      baseGoerli: "0xE2c65081CdfFe26A5F0AF75acdBAdd3977ea25ce",
+      baseGoerli: "0xe5Ad9e2adc202265Ebb3D6d93c025d2CF0Bdc726",
     },
   },
   networks: {

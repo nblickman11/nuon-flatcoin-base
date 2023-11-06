@@ -5,7 +5,7 @@ const contracts = {
       name: "baseGoerli",
       contracts: {
         CollateralHubV3: {
-          address: "0x6520b918c89d2E2354547283ee043CC45f49f522",
+          address: "0x8763FB749eB20D340bCea42aFc9b1fAae22D5ebF",
           abi: [
             {
               inputs: [],
@@ -2350,7 +2350,7 @@ const contracts = {
           ],
         },
         YourContract: {
-          address: "0x35707bE87d55F6b5f3CA9F24ec4108084d88a99A",
+          address: "0x96EDFBFcfdf9E8B0F9D785963C8Af6af5D00115d",
           abi: [
             {
               inputs: [
